@@ -30,6 +30,8 @@ import pandas as pd
 import numpy as np
 import random
 import datetime
+from tqdm import tqdm
+
 
 
 def letters(input):
@@ -158,8 +160,10 @@ def builder(table_element,meta_context):
     # this rappresent one row
 
     data_rows = []
+
+    context = process_context(meta_context)
     
-    for ele in range(0,meta_context["number"]):
+    for ele in range(0,context["number"]):
 
         # this transform the meta context into a context
 
@@ -241,6 +245,14 @@ def builder(table_element,meta_context):
             elif entity["type"] == "rand_date":   
                 
                 value = random_date(entity["range"][0], entity["range"][1])
+
+            elif entity["type"] == "delta_date":   
+                
+                # take the relative data
+                start = data_row[entity["enity"]]
+
+                # add a delta
+                value =  start + datetime.timedelta(seconds= 90000 * random.randint(entity["range"][0], entity["range"][1]))
                 
             elif entity["type"] == "context":   
                 
@@ -283,7 +295,7 @@ def process_df(df,meta_context,structure_table_2):
 
     counter = 0
 
-    for index, row in df.iterrows():
+    for index, row in tqdm(df.iterrows(), total=df.shape[0]):
 
         context_instance = merge_two_dicts(meta_context,row.to_dict())
 
@@ -302,7 +314,7 @@ def process_df(df,meta_context,structure_table_2):
 def process_numb(number,meta_context,structure_table):
     df_final = None 
 
-    for index in range(0,number):
+    for index in tqdm(range(0,number)):
 
         if index == 0:
            #print(data_row)
@@ -340,7 +352,7 @@ def main():
     {"type":"fix_value","name":"Role", "value":"Sales rep"}, ]
     }
 
-    df = process_numb(100,context,structure_table)
+    df = process_numb(500,context,structure_table)
 
     df.to_csv("data/"+str(structure_table["name"])+".csv")
 
@@ -355,6 +367,7 @@ def main():
     {"enity":"country","type":"context","name":"country"}, 
     {"enity":"prog_id","type":"progressive","name":"id","index_start" : 9000},  
     {"enity":"rand_date","type":"rand_date","name":"Date", "range":(datetime.date(2017,1, 1),datetime.date(2017, 12, 31))}, 
+    {"enity":"Date","type":"delta_date","name":"Date payment", "range":(3,8)}, 
     {"type":"choice_stat","name":"Type","range":[("Restaurant",0.3),("Hotels",0.3),("Taxi",0.3),("Honorarium",0.03),("Others",0.07)]}, 
     {"enity":"Amount_reimbourse","type":"choice_range","name":"Amount"},
     {"enity":"currency","type":"choice","name":"currency"},
@@ -366,7 +379,7 @@ def main():
     meta_context_2 = {
     "language": "en",
     "country": [("uk",0.20),("fr",0.40),("it",0.40)],
-    "number" :15,
+    "number" :[(50,0.20),(76,0.40),(104,0.40)],
     "index_start":25000
     }
 
