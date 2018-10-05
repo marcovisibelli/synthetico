@@ -352,7 +352,7 @@ def main():
     {"type":"fix_value","name":"Role", "value":"Sales rep"}, ]
     }
 
-    df = process_numb(500,context,structure_table)
+    df = process_numb(1500,context,structure_table)
 
     df.to_csv("data/"+str(structure_table["name"])+".csv")
 
@@ -379,7 +379,7 @@ def main():
     meta_context_2 = {
     "language": "en",
     "country": [("uk",0.20),("fr",0.40),("it",0.40)],
-    "number" :[(50,0.20),(76,0.40),(104,0.40)],
+    "number" :[(30,0.20),(176,0.10),(104,0.60)],
     "index_start":25000
     }
 
