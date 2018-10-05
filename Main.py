@@ -31,13 +31,21 @@ import numpy as np
 import random
 import datetime
 
+
+
+def email(df,context):
+    return str(df["name"]).lower() + "." + str(df["surname"]).lower() +"@"+ str(context["company"]).lower()+".com"
+
 prog_id_entity = {"selectors":[],"values":0}
 
+email_entity = email
 
 Amount_reimbourse_entity =  {"selectors":["Type"], "type":"choice_range", "values_all":[
          {"Type":"Restaurant","values":(100,200)}
         ,{"Type":"Hotels","values":(200,400)}
         ,{"Type":"Taxi","values":(10,40)}
+        ,{"Type":"Honorarium","values":(100,300)}
+        ,{"Type":"Others","values":(10,300)}
         ]}  
 
 
@@ -84,6 +92,14 @@ city_entity =  {"selectors":["country"], "type":"choice", "values_all":[
         ,{"country":"es","values":['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Las Palmas de Gran Canaria', 'Bilbao', 'Murcia', 'Valladolid']}
         ]}  
 
+def statistical_select(elements):
+    results = []
+    resoltion = 1000
+    for ele in elements:
+        for conte in range(0,int(resoltion*ele[1])):
+            results.append(ele[0])
+    return random.choice(results)
+        
 
 def random_date(start, end):
     """Generate a random datetime between `start` and `end`"""
@@ -171,9 +187,7 @@ def builder(table_element,context):
                     rit = apply_context(entity_values["selectors"],ele,context,data_row) 
                     if rit:
                         lista_selected +=rit
-                
-                #x_list = sum(lista_selected, [])
-                                                
+                                                                
                 value = round(random.uniform(lista_selected[0][0],lista_selected[0][1]),2)
 
                 # this add the feature to the row                
@@ -192,7 +206,11 @@ def builder(table_element,context):
             elif entity["type"] == "choice_fix":
 
                 value = random.choice(entity["range"])            
-                
+      
+            elif entity["type"] == "choice_stat":
+
+                value = statistical_select(entity["range"])        
+
             elif entity["type"] == "random_range":
 
                 value = random.randint(entity["range"][0], entity["range"][1])
@@ -208,6 +226,12 @@ def builder(table_element,context):
             elif entity["type"] == "context":   
                 
                 value = context["context"][entity["enity"]]
+
+            elif entity["type"] == "function":   
+                
+                entity_function = globals()[entity["enity"] +"_entity"]
+
+                value = entity_function(data_row,context)
             
             data_row[entity["name"]] = value    
         # append row to dataframe
@@ -226,6 +250,7 @@ def main():
     context = {
     "language": "en",
     "country": "uk",
+    "company": "happycompany",
     "number" :10,
     "index_start":1300
     }
@@ -235,6 +260,7 @@ def main():
     "structure":[
     {"enity":"name","type":"choice","name":"name"},
     {"enity":"surname","type":"choice","name":"surname"},  
+    {"enity":"email","type":"function","name":"email"},  
     {"enity":"prog_id", "type":"progressive" ,"name":"id"},  
     {"type":"random_range","name":"seniority", "range":(1,10)}, 
     {"type":"random_range","name":"Age", "range":(26,55)}, 
@@ -255,7 +281,7 @@ def main():
     {"enity":"id","type":"context","name":"Emploeyy_id"}, 
     {"enity":"prog_id","type":"progressive","name":"id"},  
     {"enity":"rand_date","type":"rand_date","name":"Date", "range":(datetime.date(2017,1, 1),datetime.date(2017, 12, 31))}, 
-    {"type":"choice_fix","name":"Type","range":["Restaurant","Hotels","Taxi"]}, 
+    {"type":"choice_stat","name":"Type","range":[("Restaurant",0.3),("Hotels",0.3),("Taxi",0.3),("Honorarium",0.03),("Others",0.07)]}, 
     {"enity":"Amount_reimbourse","type":"choice_range","name":"Amount"},
     {"enity":"currency","type":"choice","name":"currency"},
     {"enity":"city","type":"choice","name":"City"},
@@ -264,12 +290,14 @@ def main():
 
     df_final = None
 
+    index_start = 25000
+
     for index, row in df.iterrows():
         context_2 = {
         "language": "en",
-        "country": "uk",
+        "country": statistical_select([("uk",0.20),("fr",0.40),("it",0.40)]),
         "number" :30,
-        "index_start":25000,
+        "index_start":index_start,
         "context":row
         }
         
@@ -280,6 +308,8 @@ def main():
         else:
             df2 = builder(structure_table_2,context_2)
             df_final = df_final.append(df2)
+
+        index_start = df_final['id'].max()
         
 
     df_final.to_csv("data/"+str(structure_table_2["name"])+".csv")

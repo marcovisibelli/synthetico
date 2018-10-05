@@ -1,11 +1,11 @@
-,Age,Role,id,name,seniority,surname
-0,49,Sales rep,1301,Elliot,6,Sharpe
-1,42,Sales rep,1302,Alex,8,Connor
-2,48,Sales rep,1303,Reggie,7,Talbot
-3,51,Sales rep,1304,Amy,3,Henderson
-4,49,Sales rep,1305,Lily,10,Barlow
-5,53,Sales rep,1306,Austin,6,Wallace
-6,46,Sales rep,1307,Carter,10,Yates
-7,40,Sales rep,1308,Leah,8,Henry
-8,28,Sales rep,1309,Freya,5,Knight
-9,48,Sales rep,1310,Nathan,6,Rhodes
+,Age,Role,email,id,name,seniority,surname
+0,28,Sales rep,anna.ward@happycompany.com,1301,Anna,5,Ward
+1,32,Sales rep,jake.gibbons@happycompany.com,1302,Jake,8,Gibbons
+2,27,Sales rep,toby.nelson@happycompany.com,1303,Toby,8,Nelson
+3,53,Sales rep,roman.howe@happycompany.com,1304,Roman,7,Howe
+4,39,Sales rep,reuben.grant@happycompany.com,1305,Reuben,10,Grant
+5,34,Sales rep,anna.faulkner@happycompany.com,1306,Anna,4,Faulkner
+6,38,Sales rep,beth.todd@happycompany.com,1307,Beth,1,Todd
+7,32,Sales rep,iona.cross@happycompany.com,1308,Iona,10,Cross
+8,42,Sales rep,zoe.long@happycompany.com,1309,Zoe,5,Long
+9,38,Sales rep,liam.pritchard@happycompany.com,1310,Liam,9,Pritchard
