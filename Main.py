@@ -6,7 +6,7 @@
 # Author:       Marco Visibelli
 #
 # Created:      A long time ago, in a galaxy far, far away...
-# Copyright:    (c) 2018 by Total Control Software
+# Copyright:    (c) 2018 by Marco Visibelli
 # Licence:      MIT license
 #----------------------------------------------------------------------------
 
