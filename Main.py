@@ -34,10 +34,10 @@ import datetime
 prog_id_entity = {"selectors":[],"values":0}
 
 
-Amount_reimbourse_entity =  {"selectors":["Type"], "type":"choice", "values_all":[
-         {"Type":"Restaurant","values":list(range(100,200))}
-        ,{"Type":"Hotels","values":list(range(200,400))}
-        ,{"Type":"Taxi","values":list(range(10,40))}
+Amount_reimbourse_entity =  {"selectors":["Type"], "type":"choice_range", "values_all":[
+         {"Type":"Restaurant","values":(100,200)}
+        ,{"Type":"Hotels","values":(200,400)}
+        ,{"Type":"Taxi","values":(10,40)}
         ]}  
 
 
@@ -66,6 +66,15 @@ surname_entity = {"selectors":["country"],"values_all":[
         ]}
 
 
+currency_entity =  {"selectors":["country"], "type":"choice", "values_all":[
+         {"country":"gr","values": ["EUR"]}
+        ,{"country":"it","values": ["EUR"]}
+        ,{"country":"uk","values": ["GBP"]}
+        ,{"country":"fr","values": ["EUR"]}
+        ,{"country":"de","values": ["EUR"]}
+        ,{"country":"es","values": ["EUR"]}
+        ]}  
+
 city_entity =  {"selectors":["country"], "type":"choice", "values_all":[
          {"country":"gr","values":['Athens', 'Thessaloniki', 'Patras', 'Heraklion', 'Larissa', 'Volos', 'Rhodes', 'Ioannina', 'Chania', 'Agrinio']}
         ,{"country":"it","values":['Rome', 'Milan', 'Naples', 'Turin', 'Palermo', 'Genoa', 'Bologna', 'Florence', 'Bari', 'Catania']}
@@ -74,6 +83,7 @@ city_entity =  {"selectors":["country"], "type":"choice", "values_all":[
         ,{"country":"de","values":['Berlin', 'Hamburg', 'Munich', 'Cologne', 'Frankfurt am Main', 'Stuttgart', 'Düsseldorf', 'Dortmund', 'Essen', 'Leipzig']}
         ,{"country":"es","values":['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Las Palmas de Gran Canaria', 'Bilbao', 'Murcia', 'Valladolid']}
         ]}  
+
 
 def random_date(start, end):
     """Generate a random datetime between `start` and `end`"""
@@ -108,6 +118,7 @@ def apply_context(selectors,element,context,current_row):
         return ritorno
     else:
         return element["values"]
+
 
 def builder(table_element,context):
     # this rappresent one row
@@ -146,6 +157,27 @@ def builder(table_element,context):
                 value = random.choice(x_list)
 
                 # this add the feature to the row
+            #print("Processing: ",entity)
+            if entity["type"] == "choice_range":
+                
+                entity_values = globals()[entity["enity"] +"_entity"]
+                
+                list_of_values = entity_values["values_all"]
+
+                lista_selected = []
+                
+                for ele in list_of_values:
+                    # search in the context or IN THE CURRENT row
+                    rit = apply_context(entity_values["selectors"],ele,context,data_row) 
+                    if rit:
+                        lista_selected +=rit
+                
+                #x_list = sum(lista_selected, [])
+                                                
+                value = round(random.uniform(lista_selected[0][0],lista_selected[0][1]),2)
+
+                # this add the feature to the row                
+                
 
             elif entity["type"] == "progressive":
                 
@@ -172,6 +204,10 @@ def builder(table_element,context):
             elif entity["type"] == "rand_date":   
                 
                 value = random_date(entity["range"][0], entity["range"][1])
+                
+            elif entity["type"] == "context":   
+                
+                value = context["context"][entity["enity"]]
             
             data_row[entity["name"]] = value    
         # append row to dataframe
@@ -211,31 +247,44 @@ def main():
 
     print(df)
 
-    context_2 = {
-    "language": "en",
-    "country": "uk",
-    "number" :300,
-    "index_start":1300
-    }
-
     structure_table_2 ={
     "name": "reimbourse",
     "structure":[
-    {"enity":"name","type":"choice","name":"name"},
-    {"enity":"surname","type":"choice","name":"surname"},  
+    {"enity":"name","type":"context","name":"name"},
+    {"enity":"surname","type":"context","name":"surname"},  
+    {"enity":"id","type":"context","name":"Emploeyy_id"}, 
     {"enity":"prog_id","type":"progressive","name":"id"},  
     {"enity":"rand_date","type":"rand_date","name":"Date", "range":(datetime.date(2017,1, 1),datetime.date(2017, 12, 31))}, 
     {"type":"choice_fix","name":"Type","range":["Restaurant","Hotels","Taxi"]}, 
-    {"enity":"Amount_reimbourse","type":"choice","name":"Amount"},
+    {"enity":"Amount_reimbourse","type":"choice_range","name":"Amount"},
+    {"enity":"currency","type":"choice","name":"currency"},
     {"enity":"city","type":"choice","name":"City"},
     {"type":"fix_value","name":"Role", "value":"Sales rep"}, ]
     }
 
-       #print(data_row)
-    df2 = builder(structure_table_2,context_2)
-    df2.to_csv("data/"+str(structure_table_2["name"])+".csv")
+    df_final = None
 
-    print(df2)
+    for index, row in df.iterrows():
+        context_2 = {
+        "language": "en",
+        "country": "uk",
+        "number" :30,
+        "index_start":25000,
+        "context":row
+        }
+        
+        if index == 0:
+           #print(data_row)
+            df_final = builder(structure_table_2,context_2)
+            
+        else:
+            df2 = builder(structure_table_2,context_2)
+            df_final = df_final.append(df2)
+        
+
+    df_final.to_csv("data/"+str(structure_table_2["name"])+".csv")
+
+    print(df_final)
 
 #----------------------------------------------------------------------------
 
