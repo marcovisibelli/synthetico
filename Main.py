@@ -326,10 +326,10 @@ def process_numb(number,meta_context,structure_table):
         
     return df_final
         
-
+#----------------------------------------------------------------------------
 
 def main():
-    print(" --- syntetic data creator --- ")
+    print(" --- syntetic data generator --- ")
 
     context = {
     "language": "en",
@@ -389,7 +389,7 @@ def main():
 
     print(df_final)
 
-#----------------------------------------------------------------------------
+
 
 #----------------------------------------------------------------------------
 
