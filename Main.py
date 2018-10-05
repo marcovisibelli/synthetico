@@ -32,9 +32,20 @@ import random
 import datetime
 
 
+def letters(input):
+    valids = []
+    for character in input:
+        if character.isalpha():
+            valids.append(character)
+    return ''.join(valids)
+
+def merge_two_dicts(x, y):
+    z = x.copy()   # start with x's keys and values
+    z.update(y)    # modifies z with y's keys and values & returns None
+    return z
 
 def email(df,context):
-    return str(df["name"]).lower() + "." + str(df["surname"]).lower() +"@"+ str(context["company"]).lower()+".com"
+    return letters(str(df["name"]).lower()) + "." + letters(str(df["surname"]).lower()) +"@"+ letters(str(context["company"]).lower())+".com"
 
 prog_id_entity = {"selectors":[],"values":0}
 
@@ -192,7 +203,6 @@ def builder(table_element,context):
 
                 # this add the feature to the row                
                 
-
             elif entity["type"] == "progressive":
                 
                 entity_values = globals()[entity["enity"] +"_entity"]
@@ -225,7 +235,12 @@ def builder(table_element,context):
                 
             elif entity["type"] == "context":   
                 
-                value = context["context"][entity["enity"]]
+                # data could be i the context or in the current directory
+                if entity["enity"] in context.keys():
+                    value = context[entity["enity"]]
+
+                elif entity["enity"] in data_row.keys():
+                    value = data_row[entity["enity"]]
 
             elif entity["type"] == "function":   
                 
@@ -243,16 +258,55 @@ def builder(table_element,context):
     
     return df
 
+def process_df(df,context_2,structure_table_2):
+    df_final_return = None 
+
+    counter = 0
+    for index, row in df.iterrows():
+        context_final = merge_two_dicts(context_2,row.to_dict())
+
+        if counter == 0:
+            df_final_return = builder(structure_table_2,context_final)
+            
+        else:
+            df2 = builder(structure_table_2,context_final)
+            df_final_return = df_final_return.append(df2)
+
+        context_2["index_start"] = df_final_return['id'].max()
+
+        counter +=1
+
+    return df_final_return
+        
+def process_numb(number,context,structure_table):
+    df_final = None 
+
+    for index in range(0,number):
+
+        if index == 0:
+           #print(data_row)
+            df_final = builder(structure_table,context)
+            
+        else:
+            df2 = builder(structure_table,context)
+            df_final = df_final.append(df2)
+
+        context["index_start"] = df_final['id'].max()
+
+        
+    return df_final
+        
+
 
 def main():
     print(" --- syntetic data creator --- ")
 
     context = {
     "language": "en",
-    "country": "uk",
+    "country": statistical_select([("es",0.20),("uk",0.20),("fr",0.20),("it",0.20),("gr",0.20)]),
     "company": "happycompany",
-    "number" :10,
-    "index_start":1300
+    "index_start":1500,
+    "number" : 1
     }
 
     structure_table ={
@@ -268,7 +322,7 @@ def main():
     {"type":"fix_value","name":"Role", "value":"Sales rep"}, ]
     }
 
-    df = builder(structure_table,context)
+    df = process_numb(1000,context,structure_table)
 
     df.to_csv("data/"+str(structure_table["name"])+".csv")
 
@@ -289,30 +343,16 @@ def main():
     {"type":"fix_value","name":"Role", "value":"Sales rep"}, ]
     }
 
-    df_final = None
 
-    index_start = 25000
+    context_2 = {
+    "language": "en",
+    "country": statistical_select([("uk",0.20),("fr",0.40),("it",0.40)]),
+    "number" :150,
+    "index_start":25000
+    }
 
-    for index, row in df.iterrows():
-        context_2 = {
-        "language": "en",
-        "country": statistical_select([("uk",0.20),("fr",0.40),("it",0.40)]),
-        "number" :30,
-        "index_start":index_start,
-        "context":row
-        }
-        
-        if index == 0:
-           #print(data_row)
-            df_final = builder(structure_table_2,context_2)
-            
-        else:
-            df2 = builder(structure_table_2,context_2)
-            df_final = df_final.append(df2)
 
-        index_start = df_final['id'].max()
-        
-
+    df_final = process_df(df,context_2,structure_table_2)
     df_final.to_csv("data/"+str(structure_table_2["name"])+".csv")
 
     print(df_final)
