@@ -258,6 +258,7 @@ def main():
     structure_table ={
     "name": "employee_table",
     "structure":[
+     {"enity":"country","type":"context","name":"country"},
     {"enity":"name","type":"choice","name":"name"},
     {"enity":"surname","type":"choice","name":"surname"},  
     {"enity":"email","type":"function","name":"email"},  
