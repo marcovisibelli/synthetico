@@ -5,8 +5,7 @@ Ready to use synthetic data generator for machine learning. Let you to create bu
 
 The application need a set of modules:
 
-pandas
-numpy
+pip3 install -r requirements.txt
 
 # Installing
 
