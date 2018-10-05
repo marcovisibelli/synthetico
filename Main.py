@@ -37,7 +37,11 @@ def letters(input):
     for character in input:
         if character.isalpha():
             valids.append(character)
-    return ''.join(valids)
+    valid=  ''.join(valids)
+    valid = valid.replace("ó","o").replace("á","a").replace("é","e").replace("ô","o").replace("ç","c")
+
+
+    return valid
 
 def merge_two_dicts(x, y):
     z = x.copy()   # start with x's keys and values
@@ -47,7 +51,8 @@ def merge_two_dicts(x, y):
 def email(df,context):
     return letters(str(df["name"]).lower()) + "." + letters(str(df["surname"]).lower()) +"@"+ letters(str(context["company"]).lower())+".com"
 
-prog_id_entity = {"selectors":[],"values":0}
+#this contain the variables
+prog_id_entity = {}
 
 email_entity = email
 
@@ -72,6 +77,8 @@ name_entity = {"selectors":["country","gender"],
         ,{"country":"fr","gender":"F","values":["Louise","Alice","Chloe","Emma","Ines","Sarah","Jeanne","Anna","Adele","Juliette","Camille","Lea","Lina","Eva","Sofia","Charlotte","Victoria","Rose","Mila","Josephine","Manon","Zoe","Nina","Jade","Olivia","Margaux","Lou","Anaïs","Julia","Lucie","Gabrielle","Romane","Heloise","Valentine","Clémence","Apolline","Mathilde","Victoire","Alix","Ava","Agathe","Marie","Nour","Suzanne","Margot","Clara","Elsa","Romy","Iris","Léonie","Mia","Pauline","Yasmine","Constance","Lena","Madeleine","Ambre","Garance","Alma","Alicia","Diane","Laura","Sophia","Maya","Capucine","Aya","Sara","Fatoumata","Giulia","Noémie","Elena","Mariam","Celeste","Inaya","Lisa","Lola","Elise","Sophie","Anouk","Elisa","Aïcha","Lise","Salome","Assia","Maryam","Hanna","Ella","Roxane","Lila","Myriam","Lily","Eleonore","Raphaëlle","Maëlys","Ines","Luna","Berenice","Sasha","Maria","Eleonore" ]}
         ,{"country":"gr","gender":"M","values":["Achilles ","Adonis ","Adrian ","Alesandro ","Basil ","Belen ","Bemus","Caesar ","Calix ","Christophe ","Cicero ","Claus ","Cole ","Constantine ","Corban","Cy ","Damen ","Darius ","Deacon ","Demitrius ","Dennis ","Deo","Dru ","Egan ","Eros ","Estevan ","Eugene ","Evan ","Ezio","Faustus ","Felipe ","Flavian ","George ","Giles ","Gregory ","Griffin ","Hercules ","Homer ","Icarus ","Isidore ","Jace ","Jerry ","Jorges","Julian ","Kal ","Karan ","Keelan ","Kosmos","Kristo","Kyril","Lander ","Layland","Leo ","Magus","Mateo ","Maximus ","Miles ","Moe","Neo","Nicholas ","Nicos","Niles ","Nyke","Obelius","Odell ","Odysseus ","Orien","Orrin ","Othello ","Otis ","Owen ","Pancras","Pearce ","Philip ","Phoenix","Proteus ","Quinn ","Rastus","Sander ","Santos ","Sirius","Spiro","Stavros ","Tadd","Tassos ","Theo ","Timon ","Titan","Tomaso","Tyrone ","Ulysses ","Urion","Vasilios","Vitalis","Xander"]}    
         ,{"country":"gr","gender":"F","values":["Acacia","Acantha","Adelpha","Agapi","Agatha","Agathe","Agnes","Aimilios","Alcie","Alcina","Alethea","Alex","Alexa","Alexandra","Alexandria","Alexandrina","Alexina","Alexis","Alike","Aliz","Alizka","Alpha","Alsie","Althea","Amara","Amarantha","Amaryllis","Ambrosia","Aminta","Anastacia","Anastasha","Anastasia","Anatola","Andromeda","Anemone","Ange","Angela","Angele","Angeliki","Angelina","Aniceta","Annis","Annys","Anthea","Antigone","Antimony","Antinea","Aphrodite","Apollonia","Arcadia","Arcangela","Arete","Aretha","Ariadne","Arianna","Arista","Arkadina","Artemis","Artemisia","Asta","Aster","Asteria","Astraea","Astraia","Atalanta","Athena","Basilia","Beranice","Beraniece","Berenice","Berenike","Bernice","Beryl","Beta","Bronte","Brontë","Bryonia","Calandra","Calantha","Calista","Calixta","Calla","Callie","Calliope","Callista","Calypso","Carissa","Cassandra","Cassia","Cassiane","Cassiopeia","Cat","Cate","Catherine","Celena","Chara","Charis","Charmian","Chloe","Chloris","Christina","Cinda","Cipriana","Circe","Clematis","Cleopatra","Cleora","Cliantha","Clio","Collins","Cora","Corinna","Corisande","Cosima","Cressida","Crisanta","Cyane","Cybele","Cynara","Cynthia","Cytherea","Damara","Damaris","Damia","Damiana","Danaë","Daphne","Daria","Darian","Delia","Delta","Demeter","Demetria","Demi","Desdemona","Despina","Diamanta","Diandra","Diantha","Dido","Dina","Dione","Dionne","Dora","Dorcas","Dorian","Dorinda","Doris","Dorothea","Dorothy","Dree","Echo","Effie","Effy","Eirene","Eirini","Elara","Electa","Electra","Elektra","Elena","Eleni","Eleusine","Elexis","Eliana","Eliane","Elidi","Eloisia","Eos","Epiphany","Ereni","Eudora","Eugenia","Eugenie","Eulala","Eulalia","Eunice","Euphemia","Eurydice","Eustacia","Evadne","Evangeline","Evanthe","Evathia","Fantasia","Fedora","Filomena","Gaia","Galatea","Galen","Halcyon","Hali","Harmonia","Harmony","Hebe","Hecuba","Helen","Helena","Helia","Hera","Hermia","Hermione","Hero","Hestia","Hilary","Hillary","Hyacinth","Hyacinthe","Hyacynthe","Ianthe","Ilena","Ilene","Iliana","Indigo","Ino","Io","Ioanna","Iola","Iolanda","Iolande","Iolanthe","Ione","Ionia","Ionna","Iphigenia","Irene","Irina","Iris","Isadora","Isaura","Ismene","Jocasta","Jolán","Junia","Justina","Kacia","Kalliope","Kallista","Karissa","Kasiani","Kassandra","Kassia","Kassiani","Katerina","Katharine","Katherine","Katie","Khloe","Kosma","Kosta","Kostantina","Kristiana","Kynthia","Lalage","Lamia","Larisa","Larissa","Leda","Lenore","Leora","Letha","Lethe","Lex","Lexia","Lexis","Lexus","Libra","Lici","Liliah","Lilika","Lilis","Lois","Lotus","Lydia","Lyra","Lyric","Magdalen","Magdalena","Mago","Mahail","Mahaila","Mahalia","Maia","Makis","Malina","Malva","Margalo","Margaret","Maryam","Maya","Medea","Medora","Meg","Melania","Melanie","Melantha","Melany","Melia","Melina","Melissa","Melita","Melody","Melora","Muse","Mya","Myra","Myrtle","Nani","Narcissa","Narda","Natasa","Nemea","Neola","Neoma","Neri","Nerida","Nerine","Nerissa","Nickelle","Nicola","Nicole","Nicolina","Nicoline","Nidia","Nike","Niki","Nikola","Nikoleta","Nikolia","Niobe","Nitsa","Nyssa","Nyx","Obelia","Oceana","Olympia","Omega","Ophelia","Orion","Orphea","Pallas","Pandora","Panthea","Parmenia","Parthenia","Pasha","Peg","Peggy","Pelagia","Penelope","Penthia","Peri","Perrine","Persephone","Persis","Pesha","Peta","Petal","Petra","Petrina","Petrini","Petronella","Petronelle","Phaedra","Phedora","Pheobe","Phila","Philadelphia","Philippa","Philomela","Philomena","Phoebe","Phoenix","Phyllida","Phyllis","Pinelopi","Pipitsa","Popi","Praxis","Psyche","Raemonia","Rena","Reta","Reveka","Rhea","Rheta","Rheya","Rhoda","Roxane","Rue","Sapphira","Sappho","Selene","Selia","Sibley","Sibyl","Sirena","Sofi","Sofia","Sophia","Sophie","Sophoon","Sophronia","Stasia","Stavra","Stefania","Stephanie","Sybella","Sybil","Tana","Tancy","Tansy","Tasia","Tasoula","Tassia","Tempe","Tessa","Thais","Thalassa","Thalia","Thaïs","Thea","Theia","Thekla","Themis","Theo","Theodosia","Theone","Theora","Theresa","Thesally","Thetis","Thisbe","Tiffany","Timothea","Tina","Titania","Topaz","Toula","Typhaine","Téa","Urania","Ursa","Varya","Vasilia","Vasiliki","Venedicta","Vernada","Vernamina","Veronike","Veronique","Violante","Xanthe","Xanthipe","Xantho","Xena","Xenia","Xenobia","Yalena","Yannia","Yolanda","Zelena","Zelenia","Zena","Zenaida","Zenobia","Zephyr","Zephyra","Zephyrine","Zeta","Zita","Zoe","Zoei","Zoey","Zoie","Zoila","Zooey","Zosma"]}    
+        ,{"country":"es","gender":"M","values":["Hugo","Daniel","Martin","Pablo","Alejandro","Lucas","Alvaro","Adrian","Mateo","David","Mario","Manuel","Diego","Leo","Javier","Marcos","Izan","Alex","Sergio","Enzo","Carlos","Miguel","Marc","Jorge","Antonio","Gonzalo","Juan","Angel","Oliver","Iker","Dylan","Bruno","Eric","Marco","Ivan","Nicolas","Jose","Hector","Dario","Samuel","Victor","Ruben","Gabriel","Adam","Aaron","Thiago","Gael","Francisco","Guillermo","Raul","Rodrigo","Erik","Jaime","Aitor","Jesus","Pedro","Joel","Pau","Alberto","Luis","Luca","Mohamed","Ian","Rafael","Julen","Unai","Asier","Marti","Rayan","Jan","Fernando","Pol","Biel","Ismael","Saul","Andres","Oscar","Alonso","Aleix","Nil","Cristian","Santiago","Isaac","Ignacio","Arnau","Miguel Angel","Youssef","Enrique","Mauro","Joan","Jon","Noah","Jose Antonio","Jose Manuel","Omar","Eduardo","Aimar","Gerard","Aritz","Liam"]}
+        ,{"country":"es","gender":"F","values":["Lucia","Martina","Maria","Sofia","Paula","Daniela","Valeria","Alba","Julia","Noa","Sara","Carla","Emma","Carmen","Claudia","Valentina","Ana","Marta","Irene","Adriana","Laura","Vega","Elena","Alejandra","Alma","Laia","Lola","Vera","Olivia","Aitana","Jimena","Candela","Ariadna","Ines","Carlota","Ainhoa","Nora","Triana","Marina","Chloe","Alicia","Clara","Blanca","Leire","Mia","Lara","Rocio","Ainara","Nerea","Abril","Andrea","Leyre","Celia","Manuela","Victoria","Elsa","Angela","Eva","Natalia","Zoe","Aina","Isabel","Ona","Cristina","Lia","Aroa","Gala","Gabriela","Mar","Iria","Nuria","Carolina","Iris","Mara","Arlet","Helena","Luna","Malak","Cayetana","Diana","Naia","Alexia","Paola","Berta","Elia","Africa","Nahia","Amira","Aya","Ane","Salma","Elisa","Miriam","Cloe","Fatima","Jana","Noelia","Anna","Silvia","Mireia"]}
         ]
        }
 
@@ -147,14 +154,16 @@ def apply_context(selectors,element,context,current_row):
         return element["values"]
 
 
-def builder(table_element,context):
+def builder(table_element,meta_context):
     # this rappresent one row
 
     data_rows = []
     
-    prog_id_entity["values"] = context["index_start"]
+    for ele in range(0,meta_context["number"]):
 
-    for ele in range(0,context["number"]):
+        # this transform the meta context into a context
+
+        context = process_context(meta_context)
 
         data_row ={}
 
@@ -164,7 +173,6 @@ def builder(table_element,context):
             
             lista_selected = []
 
-            #print("Processing: ",entity)
             if entity["type"] == "choice":
                 
                 entity_values = globals()[entity["enity"] +"_entity"]
@@ -205,13 +213,14 @@ def builder(table_element,context):
                 
             elif entity["type"] == "progressive":
                 
-                entity_values = globals()[entity["enity"] +"_entity"]
+                if  entity["enity"] not in prog_id_entity.keys():
+                    prog_id_entity[entity["enity"]] = entity["index_start"]
 
-                last_value = entity_values["values"]
+                last_value = prog_id_entity[entity["enity"]]
 
                 value = last_value + 1
 
-                entity_values["values"] = value
+                prog_id_entity[entity["enity"]] = value
 
             elif entity["type"] == "choice_fix":
 
@@ -258,41 +267,50 @@ def builder(table_element,context):
     
     return df
 
-def process_df(df,context_2,structure_table_2):
+
+def process_context(meta_context):
+    context = {}
+    for element in meta_context.keys():
+        if isinstance(meta_context[element], (list,)):
+            context[element] = statistical_select(meta_context[element])
+        else:
+            context[element] = meta_context[element]
+    return context
+
+
+def process_df(df,meta_context,structure_table_2):
     df_final_return = None 
 
     counter = 0
+
     for index, row in df.iterrows():
-        context_final = merge_two_dicts(context_2,row.to_dict())
+
+        context_instance = merge_two_dicts(meta_context,row.to_dict())
 
         if counter == 0:
-            df_final_return = builder(structure_table_2,context_final)
+            df_final_return = builder(structure_table_2,context_instance)
             
         else:
-            df2 = builder(structure_table_2,context_final)
-            df_final_return = df_final_return.append(df2)
+            df2 = builder(structure_table_2,context_instance)
 
-        context_2["index_start"] = df_final_return['id'].max()
+            df_final_return = df_final_return.append(df2)
 
         counter +=1
 
     return df_final_return
         
-def process_numb(number,context,structure_table):
+def process_numb(number,meta_context,structure_table):
     df_final = None 
 
     for index in range(0,number):
 
         if index == 0:
            #print(data_row)
-            df_final = builder(structure_table,context)
+            df_final = builder(structure_table,meta_context)
             
         else:
-            df2 = builder(structure_table,context)
+            df2 = builder(structure_table,meta_context)
             df_final = df_final.append(df2)
-
-        context["index_start"] = df_final['id'].max()
-
         
     return df_final
         
@@ -303,26 +321,26 @@ def main():
 
     context = {
     "language": "en",
-    "country": statistical_select([("es",0.20),("uk",0.20),("fr",0.20),("it",0.20),("gr",0.20)]),
+    "country": [("es",0.20),("uk",0.20),("fr",0.20),("it",0.20),("gr",0.20)],
     "company": "happycompany",
-    "index_start":1500,
     "number" : 1
     }
 
     structure_table ={
     "name": "employee_table",
     "structure":[
-     {"enity":"country","type":"context","name":"country"},
+     {"enity":"country","type":"context","name":"main_country"},
     {"enity":"name","type":"choice","name":"name"},
     {"enity":"surname","type":"choice","name":"surname"},  
     {"enity":"email","type":"function","name":"email"},  
-    {"enity":"prog_id", "type":"progressive" ,"name":"id"},  
+    {"enity":"id_employ", "type":"progressive" ,"name":"id","index_start" : 100},  
+    {"enity":"id_employ2", "type":"progressive" ,"name":"employeed_id" , "index_start" : 1500}, 
     {"type":"random_range","name":"seniority", "range":(1,10)}, 
     {"type":"random_range","name":"Age", "range":(26,55)}, 
     {"type":"fix_value","name":"Role", "value":"Sales rep"}, ]
     }
 
-    df = process_numb(1000,context,structure_table)
+    df = process_numb(100,context,structure_table)
 
     df.to_csv("data/"+str(structure_table["name"])+".csv")
 
@@ -334,7 +352,8 @@ def main():
     {"enity":"name","type":"context","name":"name"},
     {"enity":"surname","type":"context","name":"surname"},  
     {"enity":"id","type":"context","name":"Emploeyy_id"}, 
-    {"enity":"prog_id","type":"progressive","name":"id"},  
+    {"enity":"country","type":"context","name":"country"}, 
+    {"enity":"prog_id","type":"progressive","name":"id","index_start" : 9000},  
     {"enity":"rand_date","type":"rand_date","name":"Date", "range":(datetime.date(2017,1, 1),datetime.date(2017, 12, 31))}, 
     {"type":"choice_stat","name":"Type","range":[("Restaurant",0.3),("Hotels",0.3),("Taxi",0.3),("Honorarium",0.03),("Others",0.07)]}, 
     {"enity":"Amount_reimbourse","type":"choice_range","name":"Amount"},
@@ -344,15 +363,15 @@ def main():
     }
 
 
-    context_2 = {
+    meta_context_2 = {
     "language": "en",
-    "country": statistical_select([("uk",0.20),("fr",0.40),("it",0.40)]),
-    "number" :150,
+    "country": [("uk",0.20),("fr",0.40),("it",0.40)],
+    "number" :15,
     "index_start":25000
     }
 
 
-    df_final = process_df(df,context_2,structure_table_2)
+    df_final = process_df(df,meta_context_2,structure_table_2)
     df_final.to_csv("data/"+str(structure_table_2["name"])+".csv")
 
     print(df_final)
