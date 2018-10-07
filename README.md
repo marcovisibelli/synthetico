@@ -1,4 +1,7 @@
 # synthetico
+
+[![Build Status](https://travis-ci.org/benkeen/generatedata.png?branch=master)](https://travis-ci.org/benkeen/generatedata)
+
 Synthetico is a ready to use general-purpose synthetic data generators to enable data science experiments. Let you to create business data for multiple business scenarios (Web portals, CRM data, E-commerce data, ERP data etc) that can be reaplced in a second time with real ones. I created Syntetico because all the commercial synthetic generators are way to much expensive or too much complicated to use.
 
 # Prerequisites
