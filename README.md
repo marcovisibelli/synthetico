@@ -28,3 +28,11 @@ TBD
 # License
 
 This project is licensed under the MIT License
+
+# Changelog
+
+1.1.0 - 02/10/2018
+- New relaese
+
+1.0.0 - 02/03/2017
+- Initial release
