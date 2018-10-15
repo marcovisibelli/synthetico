@@ -25,6 +25,10 @@ class synthetico:
     def __init__(self):
         pass
 
+    def save(self):
+        pass
+        #df_final.to_csv("data/"+str(structure_table_4["name"])+".csv")
+
     def _builder(self,table_element,meta_context):
         # this rappresent one row
 
@@ -41,6 +45,23 @@ class synthetico:
             data_row ={}
 
             for entity in  table_element["structure"]:
+
+
+                # this let you to rename entities
+                if "rename"  in entity.keys():
+                    
+                    values_to_rename = entity["rename"]
+
+                    # for all the elements to rename
+                    for element_to_rename in values_to_rename:
+
+                        if element_to_rename[0] in context.keys():
+                            context[element_to_rename[1]]= context[element_to_rename[0]]
+
+                        if element_to_rename[0] in data_row.keys():
+                            data_row[element_to_rename[1]]= data_row[element_to_rename[0]]
+
+                #print(entity)
                 
                 value = 0
                 
@@ -65,7 +86,7 @@ class synthetico:
                     value = random.choice(x_list)
 
                     # this add the feature to the row
-                #print("Processing: ",entity)
+                #
                 if entity["type"] == "choice_range":
                     
                     entity_values = globals()[entity["enity"] +"_entity"]
@@ -98,10 +119,18 @@ class synthetico:
                 elif entity["type"] == "choice_fix":
 
                     value = random.choice(entity["range"])            
-          
+                
                 elif entity["type"] == "choice_stat":
 
                     value = statistical_select(entity["range"])        
+
+                elif entity["type"] == "phone_number":
+
+                    value = phone_generator(entity["pattern"])    
+
+                elif entity["type"] == "random_amount":
+
+                    value = random.uniform(entity["range"][0],entity["range"][1]) 
 
                 elif entity["type"] == "random_range":
 
@@ -146,6 +175,8 @@ class synthetico:
         
         prog_id_entity["values"] = 0
         
+        df.reset_index(drop=True)
+
         return df
 
     def process_df(self,df,meta_context,structure_table_2):
@@ -165,7 +196,13 @@ class synthetico:
 
                 df_final_return = df_final_return.append(df2)
 
+            #TO REMOVE
+            prog_id_entity["id_sales_month_x"] = 0 
+            prog_id_entity["id_sales_month_y"] = 0 
+
             counter +=1
+
+        df_final_return.reset_index(drop=True)
 
         return df_final_return
             

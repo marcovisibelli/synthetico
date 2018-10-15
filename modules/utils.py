@@ -44,7 +44,13 @@ def email(df,context):
 email_entity = email
 
 
+def phone_generator(pattern):
+    stringa = pattern
 
+    while 'X' in stringa:
+        stringa = stringa.replace('X',str(random.randint(0,9)),1)
+
+    return stringa
 
 def statistical_select(elements):
     results = []
