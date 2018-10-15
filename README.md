@@ -5,7 +5,7 @@
 ![Data](media/Data.png?raw=true "Data example")
 
 
-Synthetico is a ready to use general-purpose synthetic data generators to enable data science experiments. The program is an engine to generate any sort of random data (name,surnames, telephon namebers, emails) from many nations (6 currently). Let you to create business data for multiple business scenarios (Web portals, CRM data, E-commerce data, ERP data etc) that can be reaplced in a second time with real ones. I created Syntetico because all the commercial synthetic generators are way to much expensive or too much complicated to use. Some of the features:
+Synthetico is a ready to use general-purpose synthetic data generators to enable data science experiments. The program is an engine to generate any sort of random data (name,surnames, telephon namebers, emails) from many nations (6 currently). Let you to create business data for multiple business scenarios (Web portals, CRMs, eCommerce , ERP  etc) that can be reaplced in a second time with real ones. I created Syntetico because all the commercial synthetic generators are way to much expensive or too much complicated to use. Some of the features:
 
 * Names and surnames from more than 6 countries (UK,France,Germany,Italy,Spain and Greece)
 * Phone numbers with template support
